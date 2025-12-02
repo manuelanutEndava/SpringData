@@ -1,0 +1,45 @@
+package com.example.controller;
+
+import com.example.model.Product;
+import com.example.service.ProductService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+public class ProductController {
+
+    private final ProductService productService;
+
+    public ProductController(
+            ProductService productService){
+        this.productService=productService;
+    }
+
+//    @RequestMapping("/products")
+    // changing to be more specified
+    @GetMapping("/products")
+    public String viewProducts(Model model){
+        var products=productService.findAll();
+        model.addAttribute("products", products);
+
+        return "products.html";
+    }
+
+    //add method to add products
+//    @RequestMapping(path = "/products", method = RequestMethod.POST)
+    // changing to be more specified
+    @PostMapping("/products")
+    public String addProduct(
+            Product p,
+            Model model
+    ){
+        productService.addProduct(p);
+
+        var products=productService.findAll();
+        model.addAttribute("products", products);
+        return "products.html";
+
+    }
+
+}
